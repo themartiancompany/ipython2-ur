@@ -9,13 +9,13 @@ pkgbase = ipython2
 	depends = python2
 	depends = python2-traitlets
 	depends = python2-pexpect
-	depends = sqlite
 	depends = python2-setuptools
 	depends = python2-pickleshare
 	depends = python2-pathlib
 	depends = python2-backports.shutil_get_terminal_size
 	depends = python2-prompt_toolkit1
-	optdepends = wxpython: needed for ipython2 --gui=wx
+	depends = sqlite
+	optdepends = wxpython: needed for ipython --gui=wx
 	optdepends = python2-nose: for IPython's test suite
 	provides = python2-ipython2=5.9.0
 	source = ipython2-5.9.0.tgz::https://github.com/ipython/ipython/archive/5.9.0.tar.gz

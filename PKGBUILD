@@ -14,23 +14,28 @@ pkgname="${_pkg}2"
 pkgver=5.9.0
 pkgrel=1
 pkgdesc="An enhanced Interactive Python2 shell."
-arch=('any')
+arch=(
+  'any'
+)
 url="https://${_pkg}.org"
 _url="https://github.com/${_pkg}/${_pkg}"
-license=('BSD')
+license=(
+  'BSD'
+)
 depends=(
   "${_py}"
   "${_py}-traitlets"
   "${_py}-pexpect"
-  'sqlite'
   "${_py}-setuptools"
   "${_py}-pickleshare"
   "${_py}-pathlib"
   "${_py}-backports.shutil_get_terminal_size"
   "${_py}-prompt_toolkit1"
+  'sqlite'
 )
 optdepends=(
-  "wxpython: needed for ipython2 --gui=wx" # does this should be fixed?
+  # does this should be fixed?
+  "wxpython: needed for ${_pkg} --gui=wx"
   "${_py}-nose: for IPython's test suite"
 )
 makedepends=(
@@ -55,50 +60,91 @@ md5sums=(
 # confirm that an update does not break sage?
 
 prepare() {
-  cd "${_pkg}-${pkgver}"
-  find ./ -type f -exec sed -i -e 's/prompt_toolkit/prompt_toolkit1/g' {} \;
+  cd \
+    "${_pkg}-${pkgver}"
+  find \
+    ./ \
+    -type f \
+    -exec \
+      sed \
+        -i \
+        -e \
+          's/prompt_toolkit/prompt_toolkit1/g' \
+          {} \;
 }
 
 build() {
-  cd "${srcdir}"
+  cd \
+    "${srcdir}"
 }
 
 package() {
-  cd "${srcdir}/${_pkg}-${pkgver}"
+  cd \
+    "${srcdir}/${_pkg}-${pkgver}"
 
-  "${_py}" setup.py install --prefix=/usr \
-                            --root="${pkgdir}" \
-                            --optimize=0
+  "${_py}" \
+    setup.py \
+      install \
+        --prefix=/usr \
+        --root="${pkgdir}" \
+        --optimize=0
+  cd \
+    "${srcdir}/simplegeneric-0.8.1"
+  "${_py}" \
+    setup.py \
+      install \
+        --prefix=/usr \
+        --root="${pkgdir}" \
+        --optimize=0
 
-  cd "${srcdir}/simplegeneric-0.8.1"
-  "${_py}" setup.py install --prefix=/usr \
-                            --root="${pkgdir}" \
-                            --optimize=0
-
-  cd "${srcdir}/${_pkg}-${pkgver}"
-  install -Dm644 docs/source/about/license_and_copyright.rst \
-          "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  cd \
+    "${srcdir}/${_pkg}-${pkgver}"
+  install \
+    -Dm644 \
+    "docs/source/about/license_and_copyright.rst" \
+    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 
   # hack to get around ipython collision
-  cd "${pkgdir}/usr/share/man/man1/"
+  cd \
+    "${pkgdir}/usr/share/man/man1/"
   for i in *; do
-    mv $i ${i/%.1/2.1}
+    mv \
+      $i \
+      ${i/%.1/2.1}
   done
-  find "${pkgdir}/usr/bin/" -type f -regex '.*[^2]$' -delete
-
-  cd "$srcdir/${_pkg}-${pkgver}/examples/IPython Kernel/"
-  sed -i 's/ython/ython2/g' *.desktop
-  sed -i "s/gnome-netstatus-idle/${pkgname}/" *.desktop
-  install -Dm644 "${_pkg}.desktop" \
-          "${pkgdir}/usr/share/applications/${pkgname}.desktop"
-  # install -Dm644 ipython-qtconsole.desktop \
-  #         "$pkgdir/usr/share/applications/ipython2-qtconsole.desktop"
-  install -Dm644 "${srcdir}/icon.png" \
-          "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
-
-  #cd "$pkgdir/usr/share/man/man1/IPython/qt/console/resources/icon/"
-  # install -Dm644 IPythonConsole.svg \
-  #         "${pkgdir}/usr/share/icons/hicolor/scalable/apps/${pkgname}.svg"
+  find \
+    "${pkgdir}/usr/bin/" \
+    -type f \
+    -regex '.*[^2]$' \
+    -delete
+  cd \
+    "$srcdir/${_pkg}-${pkgver}/examples/IPython Kernel"
+  sed \
+    -i \
+    's/ython/ython2/g' \
+    *.desktop
+  sed \
+    -i \
+    "s/gnome-netstatus-idle/${pkgname}/" \
+    *.desktop
+  install \
+    -Dm644 \
+    "${_pkg}.desktop" \
+    "${pkgdir}/usr/share/applications/${pkgname}.desktop"
+  # install \
+  #   -Dm644 \
+  #   ipython-qtconsole.desktop \
+  #   "$pkgdir/usr/share/applications/ipython2-qtconsole.desktop"
+  install \
+    -Dm644 \
+    "${srcdir}/icon.png" \
+    "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
+  # cd \
+  #   "$pkgdir/usr/share/man/man1/IPython/qt/console/resources/icon/"
+  # install \
+  #   -Dm644 \
+  #   IPythonConsole.svg \
+  #   "${pkgdir}/usr/share/icons/hicolor/scalable/apps/${pkgname}.svg"
 }
 
 # vim:set sw=2 sts=-1 et:
