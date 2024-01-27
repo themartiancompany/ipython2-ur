@@ -1,4 +1,7 @@
+# SPDX-License-Identifier: AGPL-3.0
+#
 # Maintainer: Pellegrino Prevete (tallero) <pellegrinoprevete@gmail.com>
+# Maintainer: Truocolo <truocolo@aol.com>
 # Contributor: Kyle Keen <keenerd@gmail.com>
 # Contributor: PepeSmith
 # Contributor: Aron Asor <aronasorman at gmail.com>
